@@ -1,0 +1,73 @@
+[gd_scene load_steps=14 format=3 uid="uid://c34cdmc386h0k"]
+
+[ext_resource type="Script" path="res://addons/Basic FPS Player/Src/basic_player_startup.gd" id="1_lev1q"]
+[ext_resource type="PackedScene" uid="uid://kmyakts4l64t" path="res://addons/Basic FPS Player/Src/basic_player_head.tscn" id="2_tfoh0"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="3_hykj3"]
+[ext_resource type="Resource" path="res://datadirectory/data.hterrain" id="4_j3seo"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="5_wn6q8"]
+[ext_resource type="Texture2D" uid="uid://ceigsyp8ofbwt" path="res://rocky_terrain_02_diff_1k.jpg" id="6_qofpb"]
+[ext_resource type="Texture2D" uid="uid://cjc4tahiawbwq" path="res://rocky_terrain_02_nor_gl_1k.jpg" id="7_m4o8c"]
+[ext_resource type="PackedScene" uid="uid://b6wgck28ko7xe" path="res://cabin22.glb" id="8_1behr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xpx8b"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_rnpvx"]
+sky_material = SubResource("ProceduralSkyMaterial_xpx8b")
+
+[sub_resource type="Environment" id="Environment_hy1rc"]
+background_mode = 2
+sky = SubResource("Sky_rnpvx")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0jy8e"]
+
+[sub_resource type="Resource" id="Resource_se6dl"]
+script = ExtResource("5_wn6q8")
+mode = 0
+textures = [[ExtResource("6_qofpb")], [ExtResource("7_m4o8c")]]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_hy1rc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Basic FPS Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.2258, 5.41756, 29.7815)
+script = ExtResource("1_lev1q")
+
+[node name="Head" parent="Basic FPS Player" instance=ExtResource("2_tfoh0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.412659, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basic FPS Player"]
+shape = SubResource("CapsuleShape3D_0jy8e")
+
+[node name="@Node3D@28109" parent="Basic FPS Player" instance=ExtResource("2_tfoh0")]
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("3_hykj3")
+map_scale = Vector3(0.1, 0.1, 0.1)
+_terrain_data = ExtResource("4_j3seo")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_se6dl")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
+
+[node name="cabin22" parent="." instance=ExtResource("8_1behr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.1243, 2.21939, 19.1189)
